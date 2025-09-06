@@ -1,8 +1,8 @@
-# SUPER JUMP GAME
+# SUPER JUMP GAME(for Super Famicom)
 <img width="560" height="515" alt="Image" src="https://github.com/user-attachments/assets/6a99699a-4017-4698-a599-59ed2f5d1ce4" />
 
 ## 概要
-「PVSneslib」で作ったスーパーファミコン用のアクションゲームです。
+「PVSneslib」で作ったスーパーファミコン用のアクションゲームです。雑誌「日経ソフトウエア2021年3月号」に掲載したファミコン用ゲーム「JUMP GAME」を作者自らが移植しました。
 
 ## ファイル説明
 「JUMPGAME.sfc」がROMイメージファイルです。エミュレータ等で実行します。
