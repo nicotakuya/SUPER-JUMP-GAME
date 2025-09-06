@@ -13,3 +13,5 @@
 十字ボタンの左右でプレイヤーの移動。
 
 Aボタンでジャンプします。Aボタンの押す長さでジャンプの高さが変わります。
+
+<img width="560" height="514" alt="Image" src="https://github.com/user-attachments/assets/154593b0-b411-4534-8864-ebd7bb614580" />
