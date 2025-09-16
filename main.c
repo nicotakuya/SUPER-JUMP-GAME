@@ -1,6 +1,6 @@
 // SUPER JUMP GAME    by Takuya Matsubara
 //
-// (powered by PVSneslib)
+// (powered by PVSnesLib)
 #include <snes.h>
 #include "soundbank.h"
 extern char SOUNDBANK__;
