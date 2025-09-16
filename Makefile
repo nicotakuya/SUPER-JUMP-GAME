@@ -21,7 +21,10 @@ all: musics bitmaps $(ROMNAME).sfc
 clean: cleanBuildRes cleanRom cleanGfx cleanAudio
 
 resource_bg.pic: resource_bg.bmp
-	$(GFXCONV) -s 8 -o 16 -u 16 -e 0 -p -t bmp -m -i $<
+	$(GFXCONV) -s 8 -o 16 -u 16 -e 2 -p -t bmp -m -i $<
+
+resource_bg2.pic: resource_bg2.bmp
+	$(GFXCONV) -s 8 -o 4 -u 4 -e 0 -p -t bmp -m -i $<
 
 resource_sp.pic: resource_sp.bmp
 	$(GFXCONV) -s 8 -o 16 -u 16 -p -t bmp  -i $<
@@ -29,4 +32,4 @@ resource_sp.pic: resource_sp.bmp
 resource_font.pic: resource_font.bmp
 	$(GFXCONV) -s 8 -o 16 -u 16 -p -t bmp  -i $<
 
-bitmaps : resource_bg.pic resource_sp.pic resource_font.pic
+bitmaps : resource_bg.pic resource_bg2.pic resource_sp.pic resource_font.pic
