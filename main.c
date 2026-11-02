@@ -55,7 +55,7 @@ extern char tilfont_end, palfont_end;
 #define VRAM_BACK2MAP 0x5000 // 背景(奥)用BG タイルマップ
 #define VRAM_BACK2PTN 0x6000 // 背景(奥)用BG パターン
 
-const char strversion[]= "Ver.1.10";
+const char strversion[]= "Ver.1.20";
 const char strtitle[] = "SUPER JUMP GAME";
 const char strhardware[] = "for SUPER FAMICOM";
 const char strcopyright[] = "(C)2025 Takuya Matsubara.";
@@ -82,13 +82,13 @@ const char strabout[6][24] = {
 };
 
 // グローバル変数
-short score,score_old;            // スコア
-unsigned char gamemode;
-unsigned char gameover; // ゲームオーバーカウンタ
-unsigned char bgx,bgy;  // BGオフセット座標
-unsigned char bg2x,bg2y;  // BGオフセット座標
-unsigned char loopcnt;  // ループカウンタ
-unsigned char level;    // 難易度（敵の出現度数）
+short score,score_old;    // スコア
+unsigned char gamemode;   // ゲーム
+unsigned char gameover;   // ゲームオーバーカウンタ
+unsigned char bgx,bgy;    // BG1(手前)オフセット座標
+unsigned char bg2x,bg2y;  // BG2(奥)オフセット座標
+unsigned char loopcnt;    // ループカウンタ
+unsigned char level;      // 難易度（敵の出現度数）
 char tmpstr[6];
 
 // タイル番号テーブル
@@ -195,11 +195,11 @@ void game_start()
     bgy = 0;
     bg2x = 0;      // BGオフセット座標
     bg2y = 0;
-    bgSetScroll(BGN_BACK, bgx, bgy);
-    bgSetScroll(BGN_BACK2, bg2x, bg2y);
+    bgSetScroll(BGN_BACK, bgx, bgy);    // BG1(手前)
+    bgSetScroll(BGN_BACK2, bg2x, bg2y); // BG2(奥)
 
     score = 0;      // スコア
-    score_old = -1; // スコア
+    score_old = -1; // スコア(旧)
     gameover = 0;   // ゲームオーバーカウンタ
     loopcnt = 0;    // ループカウンタ
     level = 50;     // 難易度
@@ -230,6 +230,11 @@ char sp_append(s16 x,s16 y,char id)
 //                p_obj->gfx,  // graphic offset
 //                PAL_SP   // palette offset
 //            );
+
+//oamSetEx(i*4, sp_size, OBJ_SHOW); // 表示サイズ
+//OBJ_SMALL
+//OBJ_LARGE
+
             break;
         }
     }
@@ -255,8 +260,8 @@ void text_clear()
 {
     char tmpx,tmpy,i;
     for(i=0; i<32*28/16; i++){
-        tmpx=(i % 2)*16;
-        tmpy=(i / 2);
+        tmpx = (i % 2)*16;
+        tmpy = (i / 2);
         consoleDrawText(tmpx, tmpy, "                ");
         spcProcess();
         WaitForVBlank();
@@ -268,7 +273,6 @@ u16 pushbutton(void)
 {
     u16 btn;
     while(1){
-        rand();
         if(padsCurrent(0)==0)break;
         spcProcess();
         WaitForVBlank();      // Vブランク待ち
@@ -288,6 +292,10 @@ u16 pushbutton(void)
 void about(void)
 {
     char i;
+    char spn = 0;
+
+    oamSetAttr(spn, 64+32, 64+56, 28*16, ATTR_NORMAL);
+    oamSetEx(spn, OBJ_LARGE, OBJ_SHOW); // 表示
 
     for(i=0; i<6; i++){
         consoleDrawText(
@@ -474,6 +482,7 @@ void ball(ST_OBJ *p_obj)
     p_obj->x = x;
     p_obj->y = y;
 }
+
 // ロボットA移動処理
 void robot_a(ST_OBJ *p_obj)
 {
@@ -686,9 +695,9 @@ int main(void)
             }
             if(loopcnt & 1){                 // BGスクロール
                 bgx+=2;
-                bgSetScroll(BGN_BACK, bgx, bgy);
-//                bg2x++;
-//                bgSetScroll(BGN_BACK2, bg2x, bg2y);
+                bgSetScroll(BGN_BACK, bgx, bgy); // BG1(手前)
+                bg2x++;
+                bgSetScroll(BGN_BACK2, bg2x, bg2y);
             }
             if(gameover){ // ゲームオーバー処理
                 if(gameover==1){
